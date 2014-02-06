@@ -11,11 +11,10 @@ $(document).ready(function() {
   });
 });
 
-
 var Die = function() {
-  this.value = 0;
-  
+  this.side = 0
+
   this.roll = function() {
-    this.value = Math.floor(Math.random()*6)+1);
+    this.side = Math.floor((Math.random()*6)+1);
   }
 }
