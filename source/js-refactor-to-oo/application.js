@@ -1,15 +1,14 @@
 $(document).ready(function() {
   $('#roller button.add').on('click', function() {
-    $('.dice').append('<div class="die">0</div>');
+    addDie();
   });
 
   $('#roller button.roll').on('click', function() {
-    $('.die').each(function(k, die) {
-      var value = Math.floor((Math.random()*6)+1);
-      $(die).text(value);
-    });
+      rollDice();
   });
 });
+
+// Die constructor
 
 var Die = function() {
   this.side = 0
@@ -17,4 +16,20 @@ var Die = function() {
   this.roll = function() {
     this.side = Math.floor((Math.random()*6)+1);
   }
+}
+
+// Helper functions
+
+var addDie = function() {
+  new_die = new Die()
+  $('.dice').append("<div class='die'>" + new_die.side + "</div>");
+}
+
+
+var rollDice = function() {
+  $('.die').each(function(k, die) {
+    temp_die = new Die();
+    temp_die.roll();
+    $(die).text(temp_die.side);
+  })
 }
