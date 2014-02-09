@@ -1,13 +1,42 @@
-$(document).ready(function() {
-  $('#roller button.add').on('click', function() {
-    console.log("WAT")
-    $('.dice').append('<div class="die">0</div>');
-  });
+$(document).ready(function(){
+  var D6 = function(){
+    this.result = 0
 
-  $('#roller button.roll').on('click', function() {
-    $('.die').each(function(k, die) {
-      var value = Math.floor((Math.random()*6)+1);
-      $(die).text(value);
-    });
-  });
-});
+    this.roll = function(){
+      this.result = Math.floor((Math.random()*6)+1)
+    }
+  }
+
+  // replaces monkey patching
+  D6.add = function(){
+      $('.dice').append('<div class="die">*</div>')
+    } // close d6.add
+  D6.roll = function(){
+    $('.die').each(function(k,die) {
+      d6 = new D6()
+      d6.roll()
+      $(die).text(d6.result)
+    })
+    }
+
+  // ---- testing monkey patching. works but bad practice---
+  // Function.prototype.add = function(){
+  //   $('.dice').append('<div class="die">*</div>')
+  // }
+
+  // Function.prototype.roll = function(){
+  //   $('.die').each(function(k,die) {
+  //     d6 = new D6()
+  //     d6.roll()
+  //     $(die).text(d6.result)
+  //   })
+  // }
+
+  $('#roller button.add').on('click', function(){
+    D6.add()
+  })
+  $('#roller button.roll').on('click', function(){
+    D6.roll()
+  })
+
+})
