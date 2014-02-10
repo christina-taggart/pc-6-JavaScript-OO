@@ -1,12 +1,12 @@
 $(document).ready(function() {
-  dice = new DiceGame();
-  
+  game = new DiceGame();
+
   $('#roller button.add').on('click', function() {
-    dice.addDie(new Die());
+    game.addDie(new Die());
   });
 
   $('#roller button.roll').on('click', function() {
-    dice.rollDice();
+    game.rollDice();
   });
 });
 
@@ -20,19 +20,33 @@ Die.prototype.roll = function() {
   this.side = Math.floor((Math.random()*6)+1);
 }
 
+Die.prototype.render = function() {
+  $('.dice').append("<div class='die'>" + this.side + "</div>");
+}
+
 // Game constructor
 
 function DiceGame() {
+  this.dice = [];
+}
+
+DiceGame.prototype.latestDie = function() {
+  return this.dice[this.dice.length - 1]
 }
 
 DiceGame.prototype.addDie = function(die) {
-  $('.dice').append("<div class='die'>" + die.side + "</div>");
+  this.dice.push(die);
+  this.latestDie().render();
+}
+
+DiceGame.prototype.clearDice = function() {
+  $('.dice').empty();
 }
 
 DiceGame.prototype.rollDice = function() {
-  $('.die').each(function(k, die) {
-    temp_die = new Die();
-    temp_die.roll();
-    $(die).text(temp_die.side);
-  })
+  this.clearDice();
+  for (i = 0; i < this.dice.length; i++) {
+    this.dice[i].roll()
+    this.dice[i].render()
+  }
 }
