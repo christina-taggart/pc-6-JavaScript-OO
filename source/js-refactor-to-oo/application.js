@@ -1,32 +1,35 @@
 $(document).ready(function() {
+  dice = new DiceGame();
+  
   $('#roller button.add').on('click', function() {
-    addDie();
+    dice.addDie(new Die());
   });
 
   $('#roller button.roll').on('click', function() {
-      rollDice();
+    dice.rollDice();
   });
 });
 
 // Die constructor
 
-var Die = function() {
+function Die() {
   this.side = 0
-
-  this.roll = function() {
-    this.side = Math.floor((Math.random()*6)+1);
-  }
 }
 
-// Helper functions
-
-var addDie = function() {
-  new_die = new Die()
-  $('.dice').append("<div class='die'>" + new_die.side + "</div>");
+Die.prototype.roll = function() {
+  this.side = Math.floor((Math.random()*6)+1);
 }
 
+// Game constructor
 
-var rollDice = function() {
+function DiceGame() {
+}
+
+DiceGame.prototype.addDie = function(die) {
+  $('.dice').append("<div class='die'>" + die.side + "</div>");
+}
+
+DiceGame.prototype.rollDice = function() {
   $('.die').each(function(k, die) {
     temp_die = new Die();
     temp_die.roll();
