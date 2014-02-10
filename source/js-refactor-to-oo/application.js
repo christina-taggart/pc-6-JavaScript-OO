@@ -1,13 +1,27 @@
 $(document).ready(function() {
-  $('#roller button.add').on('click', function() {
-    console.log("WAT")
-    $('.dice').append('<div class="die">0</div>');
-  });
+    $('#roller button.add').on('click', addDie);
 
-  $('#roller button.roll').on('click', function() {
-    $('.die').each(function(k, die) {
-      var value = Math.floor((Math.random()*6)+1);
-      $(die).text(value);
-    });
-  });
+    $('#roller button.roll').on('click', rollAllDice);
+
 });
+
+function Die(){
+  this.value = 0;
+}
+
+Die.prototype.roll = function() {
+  this.value = Math.floor((Math.random()*6)+1);
+}
+
+var addDie = function(){
+  dieToAdd = new Die()
+  $('.dice').append("<div class='die'>" + dieToAdd.value + '</div>');
+}
+
+var rollAllDice = function(){
+  $('.die').each(function(k, die) {
+    dieToRoll = new Die()
+    dieToRoll.roll();
+    $(die).text(dieToRoll.value);
+  });
+}
