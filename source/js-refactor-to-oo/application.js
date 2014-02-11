@@ -1,11 +1,14 @@
 $(document).ready(function() {
   
-  function die(){
+  function DieAdder(){
     this.add = add;
-    this.roll = roll
-    function add(){
-      $('.dice').append('<div class="die">0</div>')
+    function add(die){
+      $('.dice').append(die.content)
     }
+  };
+
+  function DieRoller(){
+    this.roll = roll;
     function roll(){
       $('.die').each(function(k, die) {
         var value = Math.floor((Math.random()*6)+1);
@@ -13,12 +16,20 @@ $(document).ready(function() {
       });
     };
   };
-  
-  var new_die = new die
+
+  function Die(){
+    this.content = '<div class="die">0</div>';
+    this.all = $('.die');
+  }
+
+  var die_adder = new DieAdder
+  var die_roller = new DieRoller
+  var die = new Die
+
   $('#roller button.add').on('click', function() {
-    new_die.add()
+    die_adder.add(die)
   });
   $('#roller button.roll').on('click', function() {
-    new_die.roll()
+    die_roller.roll()
   });
 });
