@@ -11,8 +11,9 @@ $(document).ready(function() {
   });
 });
 
-function Die() {
+function Die(id) {
   this.value = 0
+  this.id = id
 }
 
 Die.prototype = {
@@ -20,10 +21,10 @@ Die.prototype = {
     this.value = Math.floor((Math.random()*6)+1);
   },
   bodyDiv: function(){
-    return '<div class="die">' + this.value + '</div>';
+    return '<div class="die" data-id=' + this.id + '>' + this.value + '</div>';
   },
-  showValue: function() {
-
+  getDomElement: function() {
+   return $('[data-id=' + this.id + ']')
   }
 }
 
@@ -33,14 +34,17 @@ function Dice() {
 
 Dice.prototype = {
   add: function(){
-    newDie = new Die();
+    var id = this.collection.length + 1
+    newDie = new Die(id);
     this.collection.push(newDie);
     $('.dice').append(newDie.bodyDiv());
   },
   roll: function() {
-    newDie = new Die();
     for (i=0; i<this.collection.length; i++){
-     return $(this.collection[i]).text(newDie.bodyDiv());
+      var die = this.collection[i]
+      die.randomValue();
+      var $htmlDie = die.getDomElement();
+      $htmlDie.text(die.value)
     }
   }
 }
