@@ -1,21 +1,68 @@
+
+
+
 $(document).ready(function() {
+		thisgame = new Game();
 
-  $('.add').on('click', addDice)
+		$('#roller button.add').on('click', function(){
+			thisgame.addDie(new Die());
+		});
 
-  $('.roll').on('click', function(){
-    $('.die').each(rollDice)}
+		$('#roller button.roll').on('click', function(){
+			thisgame.rollDice();
+		});
+	});
+// ===================dice===========
 
-  );
-});
+function Die(face){
+	this.face=0
+}
 
-  var addDice = function() {
-    $('.dice').append('<div class="die">0</div>');
-  };
+Die.prototype.create=function(){
+	$('.dice').append("<div class='die'>"+ this.face + "</div>");
+}
+
+
+Die.prototype.roll=function(){
+	this.face=Math.floor((Math.random()*6)+1);
+
+}
+
+
+		// ==========================game=============
 
 
 
-var rollDice = function(k, die) {
-    $(die).text(Math.floor((Math.random()*6)+1));
 
-};
+function Game(){
+	this.game = []
+}
+
+
+Game.prototype.last = function() {
+  return this.game[this.game.length - 1]
+}
+
+Game.prototype.addDie = function(die) {
+  this.game.push(die);
+  this.last().create();
+}
+
+Game.prototype.empty = function() {   
+  $('.dice').empty();
+}
+
+Game.prototype.rollDice = function() {
+  this.empty();
+  for (i = 0; i < this.game.length; i++) {
+    this.game[i].roll()
+    this.game[i].create()
+  }
+}
+
+
+
+
+
+
 
